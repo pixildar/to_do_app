@@ -1,0 +1,54 @@
+version: '3'
+services:
+  to-do_pgadmin:
+    container_name: to-do_pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dosvildar@dosvildar.ru
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5051:80"
+    networks:
+      database:
+        aliases:
+          - pgadmin
+    depends_on:
+      - to-do_db
+  to-do_web:
+    container_name: to-do_web
+    build: .
+    tty: true
+    #command: npx create-react-app to_do_app
+    #command: npm run to_do_app
+    volumes:
+      - .:/usr/app/
+      - /usr/app/client/node_modules
+      - /usr/app/server/node_modules
+    ports:
+      - "3000:3000"
+      - "8000:8000"
+    networks:
+      backend:
+      database:
+    depends_on:
+      - to-do_db
+    environment:
+      WATCHPACK_POLLING: true
+      DATABASE_URL: postgres://postgres@to-do_db/todo_db
+  to-do_db:
+    container_name: to-do_db
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=todo_db
+    ports:
+      - "5434:5432"
+    networks:
+      database:
+
+networks:
+  backend:
+    driver: bridge
+  database:
+    driver: bridge

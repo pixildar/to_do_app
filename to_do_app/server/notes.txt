@@ -1,0 +1,7 @@
+npm i express cors bcrypt jsonwebtoken uuid dotenv nodemon pg
+express - backend 
+cors - Cross-Origin Resource Sharing (CORS)
+bcrypt - for pwd encryption
+uuid - generating random unit identifier
+dotenv - working with secret variables
+nodemon - changes in server js file
