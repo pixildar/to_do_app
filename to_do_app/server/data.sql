@@ -13,4 +13,4 @@ CREATE TABLE users (
     hashed_password VARCHAR(255)
 );
 
-INSERT INTO todos (id, user_email, title, progress, date) VALUES ('0', 'ildar.gabdulkhaev@test.com', 'First todo', 10, 'Thu Dec 29 2022 13:25:45 GMT+0400 (Gulf Standard Time)')
+INSERT INTO todos (id, user_email, title, progress, date) VALUES ('0', 'test@test.com', 'First todo', 10, 'Thu Dec 29 2022 13:25:45 GMT+0400 (Gulf Standard Time)')
