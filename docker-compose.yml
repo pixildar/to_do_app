@@ -4,7 +4,7 @@ services:
     container_name: to-do_pgadmin
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: dosvildar@dosvildar.ru
+      PGADMIN_DEFAULT_EMAIL: test@test.com
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5051:80"
@@ -16,17 +16,32 @@ services:
       - to-do_db
   to-do_web:
     container_name: to-do_web
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile_client
     tty: true
-    #command: npx create-react-app to_do_app
-    #command: npm run to_do_app
+    command: cd client && npm run start
     volumes:
-      - .:/usr/app/
-      - /usr/app/client/node_modules
-      - /usr/app/server/node_modules
+      - ./to_do_app:/usr/app
+    ports:
+      - "8000:8000"
+    networks:
+      backend:
+    depends_on:
+      - to-do_db
+    environment:
+      WATCHPACK_POLLING: true
+  to-do_be:
+    container_name: to-do_be
+    build:
+      context: .
+      dockerfile: Dockerfile_server
+    tty: true
+    #command: cd server && npm run start
+    volumes:
+      - ./to_do_app:/usr/app
     ports:
       - "3000:3000"
-      - "8000:8000"
     networks:
       backend:
       database:

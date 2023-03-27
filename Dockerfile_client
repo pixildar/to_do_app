@@ -1,0 +1,5 @@
+FROM node:alpine
+WORKDIR /usr/app
+COPY ./to_do_app/client /usr/app/client
+RUN npm install /usr/app/client/ --quiet
+EXPOSE 8000
