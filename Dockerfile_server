@@ -1,5 +1,6 @@
 FROM node:alpine
 WORKDIR /usr/app
 COPY ./to_do_app/server /usr/app/server
-RUN npm install /usr/app/server/ --quiet
-EXPOSE 3000
+RUN npm install --prefix /usr/app/server/ --quiet
+EXPOSE 8000
+CMD ["npm", "start", "--prefix", "/usr/app/server"]

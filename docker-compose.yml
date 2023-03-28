@@ -20,35 +20,32 @@ services:
       context: .
       dockerfile: Dockerfile_client
     tty: true
-    command: cd client && npm run start
     volumes:
-      - ./to_do_app:/usr/app
+      - ./to_do_app/client:/usr/app/client
+      - /usr/app/client/node_modules
     ports:
-      - "8000:8000"
+      - "3000:3000"
     networks:
       backend:
     depends_on:
       - to-do_db
-    environment:
-      WATCHPACK_POLLING: true
   to-do_be:
     container_name: to-do_be
     build:
       context: .
       dockerfile: Dockerfile_server
     tty: true
-    #command: cd server && npm run start
     volumes:
-      - ./to_do_app:/usr/app
+      - ./to_do_app/server:/usr/app/server
+      - /usr/app/server/node_modules
     ports:
-      - "3000:3000"
+      - "8000:8000"
     networks:
       backend:
       database:
     depends_on:
       - to-do_db
     environment:
-      WATCHPACK_POLLING: true
       DATABASE_URL: postgres://postgres@to-do_db/todo_db
   to-do_db:
     container_name: to-do_db
@@ -57,11 +54,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=todo_db
+    volumes:
+      - todo_db_data:/var/lib/postgresql/data
     ports:
       - "5434:5432"
     networks:
       database:
 
+volumes:
+  todo_db_data:
 networks:
   backend:
     driver: bridge
